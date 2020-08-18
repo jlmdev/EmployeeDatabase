@@ -2,6 +2,13 @@
 
 namespace EmployeeDatabase
 {
+    class Employee
+    {
+        public string Name { get; set; }
+        public int Department { get; set; }
+        public int Salary { get; set; }
+        public int MonthlySalary { get; set; }
+    }
     class Program
     {
 
@@ -25,20 +32,38 @@ namespace EmployeeDatabase
         static int PromptForInteger(string prompt)
         {
             Console.Write(prompt);
-            var userInput = int.Parse(Console.ReadLine());
-            return userInput;
+            int userInput;
+            var isThisGoodInput = Int32.TryParse(Console.ReadLine(), out userInput);
+
+            if (isThisGoodInput)
+            {
+                return userInput;
+            }
+            else
+            {
+                Console.WriteLine("Sorry that isn't a valid input, I'm using 0 as your answer.");
+                return 0;
+            }
+        }
+        static int ComputeMonthlySalaryFromYearly(int yearlySalary)
+        {
+            return yearlySalary / 12;
         }
         static void Main(string[] args)
         {
+            var employee = new Employee();
+
             DisplayGreeting();
 
-            var name = PromptForString("What is your name? ");
+            employee.Name = PromptForString("What is your name? ");
 
-            int department = PromptForInteger("What is your department number? ");
+            employee.Department = PromptForInteger("What is your department number? ");
 
-            int salary = PromptForInteger("What is your yearly salary (in dollars)? ");
+            employee.Salary = PromptForInteger("What is your yearly salary (in dollars)? ");
 
-            Console.WriteLine($"Hello, {name} you make {salary / 12} dollars per month.");
+            employee.MonthlySalary = ComputeMonthlySalaryFromYearly(employee.Salary);
+
+            Console.WriteLine($"Hello, {employee.Name} you make {employee.MonthlySalary} dollars per month.");
         }
     }
 }
